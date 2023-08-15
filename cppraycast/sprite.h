@@ -13,13 +13,23 @@ typedef struct
 {
 	float x;
 	float y;
+	int texture;
+	int lift;
+	float scale;
+	int downscale;
+	float spritescale;
 	float distance;
 	float angle;
 	bool visible;
-	int texture;
+	
+	
+	
 }sprite_t;
 
 
+
+void spriteinput();
+void initsprite();
 void renderSpriteProjection();
 void renderMapSprites();
 

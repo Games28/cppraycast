@@ -37,39 +37,28 @@ void processInput() {
 	case SDL_KEYDOWN: {
 		if (event.key.keysym.sym == SDLK_ESCAPE)
 			isGameRunning = false;
-		if (event.key.keysym.sym == SDLK_UP)
-			player.walkDirection = +1;
-		if (event.key.keysym.sym == SDLK_DOWN)
-			player.walkDirection = -1;
-		if (event.key.keysym.sym == SDLK_RIGHT)
-			player.turnDirection = +1;
-		if (event.key.keysym.sym == SDLK_LEFT)
-			player.turnDirection = -1;
 		if (event.key.keysym.sym == SDLK_w)
-
-			player.lookUpDown += 4;
-
+			player.walkDirection = +1;
 		if (event.key.keysym.sym == SDLK_s)
-
-			player.lookUpDown += -4;
+			player.walkDirection = -1;
+		if (event.key.keysym.sym == SDLK_d)
+			player.turnDirection = +1;
+		if (event.key.keysym.sym == SDLK_a)
+			player.turnDirection = -1;
+		
 
 		break;
 	}
 	case SDL_KEYUP: {
-		if (event.key.keysym.sym == SDLK_UP)
-			player.walkDirection = 0;
-		if (event.key.keysym.sym == SDLK_DOWN)
-			player.walkDirection = 0;
-		if (event.key.keysym.sym == SDLK_RIGHT)
-			player.turnDirection = 0;
-		if (event.key.keysym.sym == SDLK_LEFT)
-			player.turnDirection = 0;
 		if (event.key.keysym.sym == SDLK_w)
-
-			player.lookUpDown += player.lookUpDown * 0;
+			player.walkDirection = 0;
 		if (event.key.keysym.sym == SDLK_s)
-
-			player.lookUpDown += player.lookUpDown * 0;
+			player.walkDirection = 0;
+		if (event.key.keysym.sym == SDLK_d)
+			player.turnDirection = 0;
+		if (event.key.keysym.sym == SDLK_a)
+			player.turnDirection = 0;
+		
 
 		break;
 	}

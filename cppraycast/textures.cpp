@@ -13,10 +13,10 @@ static const char* textureFileNames[NUM_TEXTURES] = {
 	"./images/eagle.png",
 	"./images/pikuma.png",
 	"./images/barrel.png",
-	"./images/light.png",
-	"./images/table.png",
-	"./images/guard.png",
-	"./images/armor.png"
+	"./images/light.png",  //10
+	"./images/table.png",  //11
+	"./images/guard.png", //12
+	"./images/armor.png" //13
 
 
 };
