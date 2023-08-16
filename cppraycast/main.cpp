@@ -45,7 +45,10 @@ void processInput() {
 			player.turnDirection = +1;
 		if (event.key.keysym.sym == SDLK_a)
 			player.turnDirection = -1;
-		
+		//if (event.key.keysym.sym == SDLK_UP)
+		//	vertmove = -1.0f;
+		//if (event.key.keysym.sym == SDLK_DOWN)
+		//	vertmove = 1.0f;
 
 		break;
 	}
@@ -58,7 +61,10 @@ void processInput() {
 			player.turnDirection = 0;
 		if (event.key.keysym.sym == SDLK_a)
 			player.turnDirection = 0;
-		
+		//if (event.key.keysym.sym == SDLK_UP)
+		//	vertmove = 0.0f;
+		//if (event.key.keysym.sym == SDLK_DOWN)
+		//	vertmove = 0.0f;
 
 		break;
 	}

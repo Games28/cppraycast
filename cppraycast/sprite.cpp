@@ -8,8 +8,8 @@ static sprite_t sprites[NUM_SPRITES] =
 	//{660, 690, 9, 0, 0.50f },
 	//{250, 600, 11, 0, .75f },
 	//{250, 600, 12, 0 ,.50f},
-	{300, 400, 12, 0, 1.0f, 100, .25f },
-
+	{300, 400, 12, 0, 1.0f, -200.0f, 1.0f },
+	                       //movement
 
 };
 
@@ -30,34 +30,6 @@ void renderMapSprites()
 	}
 }
 
-void spriteinput(sprite_t &s)
-{
-	SDL_Event event;
-	SDL_PollEvent(&event);
-	switch (event.type) {
-	
-	case SDL_KEYDOWN: {
-		
-		if (event.key.keysym.sym == SDLK_UP)
-			s.spritescale = 0.01f;
-		if (event.key.keysym.sym == SDLK_DOWN)
-			s.spritescale = -0.01f;
-
-		break;
-	}
-	case SDL_KEYUP: {
-		if (event.key.keysym.sym == SDLK_UP)
-			s.spritescale = 0.0f;
-		if (event.key.keysym.sym == SDLK_DOWN)
-			s.spritescale = 0.0f;
-
-
-		break;
-	}
-
-
-	}
-}
 
 
 
@@ -106,25 +78,28 @@ void renderSpriteProjection()
 	for (int i = 0; i < numVisibleSprites; i++)
 	{
 		sprite_t sprite = visibleSprites[i];
+		//sprite.movement;
 
 		float prepDistance = sprite.distance * cos(sprite.angle);
 
-		float spriteHeight = (TILE_SIZE / prepDistance) * Dist_PROJ_PLANE;
+		float spriteHeight = ((TILE_SIZE * sprite.spritescale) / prepDistance) * Dist_PROJ_PLANE;
 		
 		float spriteWidth = spriteHeight;
 
 		
 
-		spriteHeight *= sprite.spritescale;
-		spriteWidth *= sprite.spritescale;
-
 		
+		
+		float horizon = (WINDOW_HEIGHT / 2) + sprite.movement;
 
-		float spriteTopY = (WINDOW_HEIGHT / 2) - (spriteHeight / 2);
+		float spriteTopY = horizon - (spriteHeight / 2);
+	
 		spriteTopY = (spriteTopY < 0) ? 0 : spriteTopY;
 
-		float spriteBottomY = (WINDOW_HEIGHT / 2) + (spriteHeight / 2);
+		float spriteBottomY = horizon + (spriteHeight / 2);
+		
 		spriteBottomY = (spriteBottomY > WINDOW_HEIGHT) ? WINDOW_HEIGHT : spriteBottomY;
+		
 
 		
 
@@ -149,7 +124,7 @@ void renderSpriteProjection()
 			int textureOffSetX = ((x - spriteLeftX) * texelWidth);
 			for (int y = spriteTopY; y < spriteBottomY; y++)
 			{
-				int distanceFromTop = y + (spriteHeight / 2) - (WINDOW_HEIGHT / 2);
+				int distanceFromTop = y + (spriteHeight / 2) - horizon;
 				int textureOffSetY = distanceFromTop * (textureHeight / spriteHeight);
 
 				if (x > 0 && x < WINDOW_WIDTH && y > 0 && y < WINDOW_HEIGHT)

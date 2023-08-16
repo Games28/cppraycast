@@ -7,7 +7,7 @@
 #include "defs.h"
 #include "utils.h"
 #include "ray.h"
-
+#include <iostream>
 
 typedef struct
 {
@@ -16,7 +16,7 @@ typedef struct
 	int texture;
 	int lift;
 	float scale;
-	int downscale;
+	float movement;
 	float spritescale;
 	float distance;
 	float angle;
@@ -28,7 +28,6 @@ typedef struct
 
 
 
-void spriteinput();
 void initsprite();
 void renderSpriteProjection();
 void renderMapSprites();
