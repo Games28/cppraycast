@@ -2,18 +2,9 @@
 
 
 
-static sprite_t sprites[NUM_SPRITES] =
-{
-	//{640, 630, 9, 0, 1.0f},
-	//{660, 690, 9, 0, 0.50f },
-	//{250, 600, 11, 0, .75f },
-	//{250, 600, 12, 0 ,.50f},
-	{300, 400, 12, 0, 1.0f, -200.0f, 1.0f },
-	                       //movement
 
-};
-
-
+static sprite_t sprites[NUM_SPRITES];
+PhysicObject physicobject;
 void renderMapSprites()
 {
 	for (int i = 0; i < NUM_SPRITES; i++)
@@ -31,13 +22,29 @@ void renderMapSprites()
 }
 
 
+float fSpriteUplift = 0.0f;
 
+void initsprite()
+{
+	sprites[0] = { 300, 400, 9, 0, 1.0f, -200.0f, 1.0f };
+	
+	
+}
+
+void spriteupdate(float deltatime)
+{
+	
+	
+
+
+
+}
 
 void renderSpriteProjection()
 {
 	sprite_t visibleSprites[NUM_SPRITES];
 	int numVisibleSprites = 0;
-
+	
 
 	for (int i = 0; i < NUM_SPRITES; i++) {
 		float angleSpritePlayer = player.rotationAngle - atan2(sprites[i].y - player.y, sprites[i].x - player.x);
@@ -82,21 +89,22 @@ void renderSpriteProjection()
 
 		float prepDistance = sprite.distance * cos(sprite.angle);
 
-		float spriteHeight = ((TILE_SIZE * sprite.spritescale) / prepDistance) * Dist_PROJ_PLANE;
+		float spriteHeight = ((TILE_SIZE) / prepDistance) * Dist_PROJ_PLANE;
 		
 		float spriteWidth = spriteHeight;
 
-		
+		//this is will the bottom to bounce from
+		float floor = (WINDOW_HEIGHT / 2) + (spriteHeight / 2);
 
 		
 		
-		float horizon = (WINDOW_HEIGHT / 2) + sprite.movement;
-
-		float spriteTopY = horizon - (spriteHeight / 2);
+		
+		//this is will the determine the height to drop from 
+		float spriteTopY = (WINDOW_HEIGHT / 2) - (spriteHeight / 2) + fSpriteUplift;
 	
 		spriteTopY = (spriteTopY < 0) ? 0 : spriteTopY;
 
-		float spriteBottomY = horizon + (spriteHeight / 2);
+		float spriteBottomY = (WINDOW_HEIGHT / 2) + (spriteHeight / 2) + fSpriteUplift;
 		
 		spriteBottomY = (spriteBottomY > WINDOW_HEIGHT) ? WINDOW_HEIGHT : spriteBottomY;
 		
@@ -115,7 +123,7 @@ void renderSpriteProjection()
 		int textureHeight = upng_get_height(textures[sprite.texture]);
 
 		
-		
+		std::cout << "position x:" << sprite.x << " y:" << sprite.y << std::endl;
 		
 		for (int x = spriteLeftX; x < spriteRightX; x++)
 		{
@@ -124,7 +132,7 @@ void renderSpriteProjection()
 			int textureOffSetX = ((x - spriteLeftX) * texelWidth);
 			for (int y = spriteTopY; y < spriteBottomY; y++)
 			{
-				int distanceFromTop = y + (spriteHeight / 2) - horizon;
+				int distanceFromTop = y - fSpriteUplift + (spriteHeight / 2) - (WINDOW_HEIGHT / 2);
 				int textureOffSetY = distanceFromTop * (textureHeight / spriteHeight);
 
 				if (x > 0 && x < WINDOW_WIDTH && y > 0 && y < WINDOW_HEIGHT)

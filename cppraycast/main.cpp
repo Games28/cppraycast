@@ -22,6 +22,7 @@ int ticksLastFrame = 0;
 void setup() {
 
 	//loading textures from texture.h
+	initsprite();
 	loadTextures();
 }
 
@@ -45,10 +46,8 @@ void processInput() {
 			player.turnDirection = +1;
 		if (event.key.keysym.sym == SDLK_a)
 			player.turnDirection = -1;
-		//if (event.key.keysym.sym == SDLK_UP)
-		//	vertmove = -1.0f;
-		//if (event.key.keysym.sym == SDLK_DOWN)
-		//	vertmove = 1.0f;
+		if (event.key.keysym.sym == SDLK_PAGEUP)   fSpriteUplift -= 2.0f; islifting = true;
+		if (event.key.keysym.sym == SDLK_PAGEDOWN) fSpriteUplift += 2.0f;
 
 		break;
 	}
@@ -61,10 +60,7 @@ void processInput() {
 			player.turnDirection = 0;
 		if (event.key.keysym.sym == SDLK_a)
 			player.turnDirection = 0;
-		//if (event.key.keysym.sym == SDLK_UP)
-		//	vertmove = 0.0f;
-		//if (event.key.keysym.sym == SDLK_DOWN)
-		//	vertmove = 0.0f;
+		if (event.key.keysym.sym == SDLK_PAGEUP)  islifting = false;
 
 		break;
 	}
@@ -81,7 +77,7 @@ void update() {
 	float deltaTime = (SDL_GetTicks() - ticksLastFrame) / 1000.0f;
 
 	ticksLastFrame = SDL_GetTicks();
-
+	physicobject.deltatime = deltaTime;
 	movePlayer(deltaTime);
 	castAllRays();
 }

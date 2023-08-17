@@ -126,7 +126,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\jedi\Desktop\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -156,24 +156,28 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="physics.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="ray.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="textures.cpp" />
     <ClCompile Include="upng.cpp" />
     <ClCompile Include="utils.cpp" />
+    <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defs.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="physics.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="textures.h" />
     <ClInclude Include="upng.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="Vec2.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
