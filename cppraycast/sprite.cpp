@@ -101,11 +101,11 @@ void renderSpriteProjection()
 		
 		//this is will the determine the height to drop from 
 		float spriteTopY = (WINDOW_HEIGHT / 2) - (spriteHeight / 2) + fSpriteUplift;
-	
-		spriteTopY = (spriteTopY < 0) ? 0 : spriteTopY;
+	    float spriteBottomY = (WINDOW_HEIGHT / 2) + (spriteHeight / 2) + fSpriteUplift;
 
-		float spriteBottomY = (WINDOW_HEIGHT / 2) + (spriteHeight / 2) + fSpriteUplift;
-		
+
+
+		spriteTopY = (spriteTopY < 0) ? 0 : spriteTopY;
 		spriteBottomY = (spriteBottomY > WINDOW_HEIGHT) ? WINDOW_HEIGHT : spriteBottomY;
 		
 
@@ -123,7 +123,7 @@ void renderSpriteProjection()
 		int textureHeight = upng_get_height(textures[sprite.texture]);
 
 		
-		std::cout << "position x:" << sprite.x << " y:" << sprite.y << std::endl;
+		
 		
 		for (int x = spriteLeftX; x < spriteRightX; x++)
 		{
