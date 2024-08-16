@@ -18,6 +18,35 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="application.cpp" />
+    <ClCompile Include="force_powers.cpp" />
+    <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="ray.cpp" />
+    <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="textures.cpp" />
+    <ClCompile Include="upng.cpp" />
+    <ClCompile Include="Vec2.cpp" />
+    <ClCompile Include="wall.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="application.h" />
+    <ClInclude Include="defs.h" />
+    <ClInclude Include="force_powers.h" />
+    <ClInclude Include="graphics.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="physics.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="ray.h" />
+    <ClInclude Include="sprite.h" />
+    <ClInclude Include="textures.h" />
+    <ClInclude Include="upng.h" />
+    <ClInclude Include="Vec2.h" />
+    <ClInclude Include="wall.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -152,34 +181,6 @@
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="graphics.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="map.cpp" />
-    <ClCompile Include="physics.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="ray.cpp" />
-    <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="textures.cpp" />
-    <ClCompile Include="upng.cpp" />
-    <ClCompile Include="utils.cpp" />
-    <ClCompile Include="Vec2.cpp" />
-    <ClCompile Include="wall.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="defs.h" />
-    <ClInclude Include="graphics.h" />
-    <ClInclude Include="map.h" />
-    <ClInclude Include="physics.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="ray.h" />
-    <ClInclude Include="sprite.h" />
-    <ClInclude Include="textures.h" />
-    <ClInclude Include="upng.h" />
-    <ClInclude Include="utils.h" />
-    <ClInclude Include="Vec2.h" />
-    <ClInclude Include="wall.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

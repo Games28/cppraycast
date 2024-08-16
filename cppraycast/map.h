@@ -1,18 +1,43 @@
 #ifndef MAP_H
 #define MAP_H
-#include "defs.h"
 
+#include "defs.h"
 #include "graphics.h"
 
 
+class Map {
 
+public:
 
-//static const int map[MAP_NUM_ROWS][MAP_NUM_COLS];
+	Map() = default;
+	bool mapHasWallAt(float x, float y);
+	bool isInsideMap(float x, float y);
 
-bool mapHasWallAt(float x, float y);
-bool isInsideMap(float x, float y);
+	void renderMapGrid(graphics& graphic);
+	int getMapAt(int i, int j);
 
-void renderMapGrid(void);
-int getMapAt(int i, int j);
+//public:
+private:
+
+	const  int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 0, 0, 1},
+        {1, 0, 0, 0, 0, 1, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1},
+        {1, 0, 0, 0, 0, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1},
+        {1, 0, 0, 0, 0, 1, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 9, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+	};
+};
+
 #endif // !MAP_H
+
+
 

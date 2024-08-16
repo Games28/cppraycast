@@ -1,24 +1,28 @@
-#ifndef PHYSICS_H
-#define PHYSICS_H
-#include "Vec2.h"
+#ifndef  THEPHYSICS_H
+#define THEPHYSICS_H
+#include <iostream>
 
-struct PhysicObject
+class thePhysics
 {
-	float* tophalf;
-	float* bottomhalf;
-	float* floor;
-	float acclerate;
-	float velocity;
-	float mass;
-	float deltatime;
+public:
+	thePhysics() = default;
 
-	void integrate();
-	void physicssetup(float& tophalf, float& bottomhalf, float& floor);
-	void physicsdisplay();
+	void integrate(float& deltatime);
+	void physicsconstants();
+	void physicsobjectlift(float& deltatime, bool& isfalling);
+	void physicssetup(float& lift);
+
+public:
+	bool isfalling;
+	bool iscaught;
+	float gravity;
+	int pixels_per_meter;;
+	float* pos = nullptr;
+	float vel;
+	float accelerate;
+	float deltatime;
 };
 
-extern bool islifting;
-
-#endif // PHYSICS_H
+#endif // ! PHYSICS_H
 
 

@@ -1,44 +1,22 @@
 #include "map.h"
 
-static const  int map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1}
-
-};
-
-bool  mapHasWallAt(float x, float y) {
+bool Map::mapHasWallAt(float x, float y)
+{
 	if (x < 0 || x >= MAP_NUM_COLS * TILE_SIZE || y < 0 || y >= MAP_NUM_ROWS * TILE_SIZE) {
 		return true;
 	}
 	int mapGridIndexX = floor(x / TILE_SIZE);
 	int mapGridIndexY = floor(y / TILE_SIZE);
 	return map[mapGridIndexY][mapGridIndexX] != 0;
-
 }
 
-bool isInsideMap(float x, float y)
+bool Map::isInsideMap(float x, float y)
 {
 	return (x >= 0 && x <= MAP_NUM_COLS * TILE_SIZE && y >= 0 && y <= MAP_NUM_ROWS * TILE_SIZE);
 }
 
-int getMapAt(int i, int j)
+void Map::renderMapGrid(graphics& graphic)
 {
-	return map[i][j];
-}
-
-void renderMapGrid(void) {
 	for (int i = 0; i < MAP_NUM_ROWS; i++) {
 		for (int j = 0; j < MAP_NUM_COLS; j++) {
 			int tileX = j * TILE_SIZE;
@@ -46,7 +24,7 @@ void renderMapGrid(void) {
 			uint32_t tileColor = map[i][j] != 0 ? 0x00FF2020 : 0x00000000;
 
 
-			drawRect(
+			graphic.drawRect(
 				tileX * MINIMAP_SCALE_FACTOR,
 				tileY * MINIMAP_SCALE_FACTOR,
 				TILE_SIZE * MINIMAP_SCALE_FACTOR,
@@ -56,6 +34,10 @@ void renderMapGrid(void) {
 
 		}
 	}
-
 }
 
+int Map::getMapAt(int i, int j)
+{
+	return map[i][j];
+
+}

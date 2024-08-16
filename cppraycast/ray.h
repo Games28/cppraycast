@@ -1,53 +1,44 @@
 #ifndef RAY_H
 #define RAY_H
-#include <stdbool.h>
-#include <limits.h>
-#include "defs.h"
-#include "player.h"
-#include <float.h>
-#include "utils.h"
+
+#include <limits>
 #include <vector>
 
+#include "defs.h"
+#include "player.h"
+#include "map.h"
+#include "graphics.h"
+#include <algorithm>
 
 
-
-typedef struct {
+struct ray_t
+{
 	float rayAngle;
 	float wallHitX;
 	float wallHitY;
 	float distance;
-
-	// multilevel attempt
-	
-	int wallcount;
-	//end
 	bool wasHitVertical;
 	bool firstwall;
 	int texture;
+};
 
+typedef std::vector<ray_t> HitListType;
 
-}ray_t;
-
-typedef struct
+class Rays
 {
-	float wallHitX;
-	float wallHitY;
-	float distance;
-	int height;
-	//std::vector<IntersectInfo> allHits;
-}IntersectInfo;
+public:
+	Rays() = default;
+	void castRay(float rayAngle, int stripId, Player& player, Map& map);
+	void castAllRays(Player& player, Map& map);
+	void renderMapRays(graphics& gfx, Player& player);
+	void normalizeAngle(float* angle);
+	float distanceBetweenPoints(float x1, float y1, float x2, float y2);
+
+public:
+	HitListType rays[NUM_RAYS];
+};
+
+#endif // ifndef RAY_H
 
 
-extern ray_t rays[NUM_RAYS];
-//extern std::vector<IntersectInfo> allHits;
-
-
-
-void castRay(float rayAngle, int stripId);
-void castAllRays(void);
-void renderMapRays(void);
-bool allHitPoints(float xintercept, float yintercept, float xstep, float ystep, std::vector<IntersectInfo>& hitlist);
-
-
-#endif
 

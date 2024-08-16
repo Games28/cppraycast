@@ -22,6 +22,7 @@
 #define TEXUTRE_HEIGHT 64
 
 #define NUM_SPRITES 1
+#define NUM_CHARTEXTURES 7
 #define FOV_ANGLE (60 * (PI / 180))
 
 #define NUM_RAYS WINDOW_WIDTH
@@ -30,6 +31,9 @@
 
 #define FPS 60
 #define FRAME_TIME_LENGTH (1000 / FPS)
+
+
+
 
 typedef uint32_t color_t;
 

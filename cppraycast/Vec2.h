@@ -1,12 +1,10 @@
 #ifndef  VEC2_H
 #define VEC2_H
-#include <cmath>
+#include <math.h>
 
-struct Vec2
+class Vec2
 {
-	float x, y;
-
-
+public:
 	Vec2();
 	Vec2(float x, float y);
 
@@ -42,6 +40,11 @@ struct Vec2
 	Vec2& operator -=(const Vec2& v);
 	Vec2& operator *=(const float n);
 	Vec2& operator /=(const float n);
-};
 
-#endif
+public:
+	float x, y;
+
+
+};
+#endif // ! VEC2_H
+

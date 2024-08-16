@@ -1,11 +1,7 @@
 #include "graphics.h"
 
-static SDL_Window* window = NULL;
-static  SDL_Renderer* renderer = NULL;
-static color_t* colorBuffer = NULL;
-static SDL_Texture* colorBufferTexture;
-
-bool initializeWindow(void) {
+bool graphics::initializeWindow(void)
+{
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {         //error checking
 		fprintf(stderr, "error initializing sdl.\n");
 		return false;
@@ -52,8 +48,8 @@ bool initializeWindow(void) {
 	return true;
 }
 
-void destroyWindow(void) {
-
+void graphics::destroyWindow(void)
+{
 	free(colorBuffer);
 	SDL_DestroyTexture(colorBufferTexture);
 	SDL_DestroyRenderer(renderer);
@@ -61,15 +57,16 @@ void destroyWindow(void) {
 	SDL_Quit();
 }
 
-void clearColorBuffer(color_t color) {
+void graphics::clearColorBuffer(color_t color)
+{
 	for (int i = 0; i < WINDOW_WIDTH * WINDOW_HEIGHT; i++) {
 		colorBuffer[i] = color;
 
 	}
-
 }
 
-void renderColorBuffer(void) {
+void graphics::renderColorBuffer(void)
+{
 	SDL_UpdateTexture(
 		colorBufferTexture,
 		NULL,
@@ -79,15 +76,14 @@ void renderColorBuffer(void) {
 	SDL_RenderCopy(renderer, colorBufferTexture, NULL, NULL);
 
 	SDL_RenderPresent(renderer);
-
 }
 
-void drawPixel(int x, int y, color_t color)
+void graphics::drawPixel(int x, int y, color_t color)
 {
 	colorBuffer[(WINDOW_WIDTH * y) + x] = color;
 }
 
-void drawRect(int x, int y, int width, int height, color_t color)
+void graphics::drawRect(int x, int y, int width, int height, color_t color)
 {
 	for (int i = x; i <= (x + width); i++)
 	{
@@ -98,7 +94,7 @@ void drawRect(int x, int y, int width, int height, color_t color)
 	}
 }
 
-void drawLine(int x0, int y0, int x1, int y1, color_t color)
+void graphics::drawLine(int x0, int y0, int x1, int y1, color_t color)
 {
 	int deltaX = (x1 - x0);
 	int deltaY = (y1 - y0);
@@ -117,6 +113,4 @@ void drawLine(int x0, int y0, int x1, int y1, color_t color)
 		currentX += xIncrement;
 		currentY += yIncrement;
 	}
-
 }
-

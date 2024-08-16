@@ -1,7 +1,6 @@
 #include "wall.h"
 
-
-void changeColorIntensity(color_t* color, float factor)
+void Wall::changeColorIntensity(color_t* color, float factor)
 {
 	color_t a = (*color & 0xFF000000);
 	color_t r = (*color & 0x00FF0000) * factor;
@@ -11,131 +10,110 @@ void changeColorIntensity(color_t* color, float factor)
 	*color = a | (r & 0x00FF0000) | (g & 0x0000FF00) | (b & 0x000000FF);
 }
 
-void renderWallProjection(void) {
+void Wall::renderWallProjection(graphics& gfx, Rays& ray, Player& player, Texture& texture)
+{
 
-	bool topwallhit = false;
 	for (int x = 0; x < NUM_RAYS; x++) {
-		float prepDistance = rays[x].distance * cos(rays[x].rayAngle - player.rotationAngle);
 
-		float WallHeight = (TILE_SIZE / prepDistance * Dist_PROJ_PLANE);
+        // container for delayed pixel rendering
+        std::vector<DelayedPixel> vDelayedPixels;
+        // iterate the hitpoints until a non transparent wall is encountered
+        bool bFinished = false;
+        for (int i = 0; i < (int)ray.rays[x].size() && !bFinished; i++) {
 
-		int wallStripHeight = (int)WallHeight;
+            // get the distance to the hitpoint from the hit record info, and compensate for the view angle
+            float prepDistance = ray.rays[x][i].distance * cos(ray.rays[x][i].rayAngle - player.rotationAngle);
+            // calculate wall height from the distance
+            float WallHeight = (TILE_SIZE / prepDistance * Dist_PROJ_PLANE);
+            // project the wall top and bottom on the screen
+            int wallStripHeight = (int)WallHeight;
+            int wallTopY        = (WINDOW_HEIGHT / 2) - (wallStripHeight / 2);
+            int wallBottomY     = (WINDOW_HEIGHT / 2) + (wallStripHeight / 2);
+            // clip against windows boundaries
+            wallTopY    = wallTopY    <             0 ?             0 : wallTopY;
+            wallBottomY = wallBottomY > WINDOW_HEIGHT ? WINDOW_HEIGHT : wallBottomY;
 
-		int wallTopY, wallBottomY;
+            int nHalfWindowHeight = WINDOW_HEIGHT / 2;
+            float fPlayerH        = TILE_SIZE / 2.0f;
+            float fFoV            = 60.0f;
+            float fAngleStep      = fFoV / (float)NUM_RAYS;
+            float fViewAngle      = (float)(x - (NUM_RAYS / 2)) * fAngleStep;
+            float fCurAngle       = (player.rotationAngle * 180.0f / PI) + fViewAngle;
+            float fPlayerX        = player.x;
+            float fPlayerY        = player.y;
+            float fCosCurAngle    = cos(fCurAngle  * PI / 180.0f);
+            float fSinCurAngle    = sin(fCurAngle  * PI / 180.0f);
+            float fCosViewAngle   = cos(fViewAngle * PI / 180.0f);
 
-		wallTopY = (WINDOW_HEIGHT / 2) - (wallStripHeight / 2);
+            int textureOffSetX;
+            if (ray.rays[x][i].wasHitVertical) {
+                textureOffSetX = (int)ray.rays[x][i].wallHitY % TILE_SIZE;
+            }
+            else {
+                textureOffSetX = (int)ray.rays[x][i].wallHitX % TILE_SIZE;
+            }
 
-		wallBottomY = (WINDOW_HEIGHT / 2) + (wallStripHeight / 2);
-		//multilevel attempt
-		
-		wallTopY = wallTopY < 0 ? 0 : wallTopY;
-		wallBottomY = wallBottomY > WINDOW_HEIGHT ? WINDOW_HEIGHT : wallBottomY;
-		int nHalfWindowHeight = WINDOW_HEIGHT / 2;
-		float fPlayerH = TILE_SIZE / 2.0f;
-		float fFoV = 60.0f;
-		float fAngleStep = fFoV / (float)NUM_RAYS;
-		float fViewAngle = (float)(x - (NUM_RAYS / 2)) * fAngleStep;
-		float fCurAngle = (player.rotationAngle * 180.0f / PI) + fViewAngle;
-		float fPlayerX = player.x;
-		float fPlayerY = player.y;
-		float fCosCurAngle = cos(fCurAngle * PI / 180.0f);
-		float fSinCurAngle = sin(fCurAngle * PI / 180.0f);
-		float fCosViewAngle = cos(fViewAngle * PI / 180.0f);
+            //get correct texture id for map content
+            int texNum = ray.rays[x][i].texture - 1;
 
-		int textureOffSetX;
-		if (rays[x].wasHitVertical) {
-			textureOffSetX = (int)rays[x].wallHitY % TILE_SIZE;
+            int texture_width  = upng_get_width( texture.textures[texNum]);
+            int texture_height = upng_get_height(texture.textures[texNum]);
 
-		}
-		else {
+            // render this slice of the screen
+            for (int y = 0; y < WINDOW_HEIGHT; y++)
+            {
+                if (y < wallTopY)         // pixel is above the wall, render sky color
+                {
+                    gfx.drawPixel(x, y, 0xff444444);
+                }
+                else if (y > wallBottomY)  // pixel is below the wall, render floor pixel
+                {
 
-			textureOffSetX = (int)rays[x].wallHitX % TILE_SIZE;
-		}
+                    float fFloorProjDistance = ((fPlayerH / (float)(y - nHalfWindowHeight)) * Dist_PROJ_PLANE) / fCosViewAngle;
+                    float fFloorProjX = fPlayerX + fFloorProjDistance * fCosCurAngle;
+                    float fFloorProjY = fPlayerY + fFloorProjDistance * fSinCurAngle;
+                    int nSampleX = (int)(fFloorProjX) % TILE_SIZE;
+                    int nSampleY = (int)(fFloorProjY) % TILE_SIZE;
+                    color_t* wallTextureBuffer = (color_t*)upng_get_buffer(texture.textures[5]);
+                    color_t texelColor = wallTextureBuffer[(nSampleY * texture_width) + nSampleX];
 
-		//get correct texture id for map content
-		int texNum = rays[x].texture - 1;
+                    gfx.drawPixel(x, y, texelColor);
+                }
+                else                      // pixel is part of the wall, render wall pixel
+                {
+                    int distanceFromTop = y + (wallStripHeight / 2) - (WINDOW_HEIGHT / 2);
+                    int textureOffSetY = distanceFromTop * ((float)texture_height / wallStripHeight);
 
-		int texture_width = upng_get_width(textures[texNum]);
-		int texture_height = upng_get_height(textures[texNum]);
+                    color_t* wallTextureBuffer = (color_t*)upng_get_buffer(texture.textures[texNum]);
+                    color_t texelColor = wallTextureBuffer[(texture_width * textureOffSetY) + textureOffSetX];
 
-		int hitindex = 0;
-		float rawdistance;
-		float correctdistance;
-		int colheight;
-		
-		for (int y = 0; y < WINDOW_HEIGHT; y++)
-		{
-			if (y < wallTopY)
-			{
+                    if (ray.rays[x][i].wasHitVertical)
+                    {
+                        changeColorIntensity(&texelColor, 0.7);
+                    }
 
-				
-					
-						
-					
+                    // if the current wall/texture is transparent, then store pixel for delayed rendering
+                    if (texture.isTransparent[texNum]) {
+                        vDelayedPixels.push_back( { x, y, texelColor } );
 
-				
-				
-				
-					float fFloorProjDistance = ((fPlayerH / (float)(nHalfWindowHeight - y)) * Dist_PROJ_PLANE) / fCosViewAngle;
-					float fFloorProjX = fPlayerX + fFloorProjDistance * fCosCurAngle;
-					float fFloorProjY = fPlayerY + fFloorProjDistance * fSinCurAngle;
-					int nSampleX = (int)(fFloorProjX) % TILE_SIZE;
-					int nSampleY = (int)(fFloorProjY) % TILE_SIZE;
-					color_t* wallTextureBuffer = (color_t*)upng_get_buffer(textures[4]);
-					color_t texelColor = wallTextureBuffer[(texture_width * nSampleY) + nSampleX];
+                    } else {
+                        gfx.drawPixel(x, y, texelColor);
+                        bFinished = true;
+                    }
+                }
+            }
+            // quit rendering if the last processed hitpoint produces a non-transparent pixel
+            bFinished = !texture.isTransparent[texNum];
+        }
 
-					//drawPixel(x, y, texelColor);
-					drawPixel(x, y, 0xff444444);
-				
-
-			}
-			else if (y > wallBottomY)
-			{
-
-				float fFloorProjDistance = ((fPlayerH / (float)(y - nHalfWindowHeight)) * Dist_PROJ_PLANE) / fCosViewAngle;
-				float fFloorProjX = fPlayerX + fFloorProjDistance * fCosCurAngle;
-				float fFloorProjY = fPlayerY + fFloorProjDistance * fSinCurAngle;
-				int nSampleX = (int)(fFloorProjX) % TILE_SIZE;
-				int nSampleY = (int)(fFloorProjY) % TILE_SIZE;
-				color_t* wallTextureBuffer = (color_t*)upng_get_buffer(textures[5]);
-				color_t texelColor = wallTextureBuffer[(nSampleY * texture_width) + nSampleX];
-
-				drawPixel(x, y, texelColor);
-				//drawPixel(x, y, 0xff777777);
-			}
-			else
-			{
-				int distanceFromTop = y + (wallStripHeight / 2) - (WINDOW_HEIGHT / 2);
-				int textureOffSetY = distanceFromTop * ((float)texture_height / wallStripHeight);
-
-				color_t* wallTextureBuffer = (color_t*)upng_get_buffer(textures[texNum]);
-				color_t texelColor = wallTextureBuffer[(texture_width * textureOffSetY) + textureOffSetX];
-				drawPixel(x, y, texelColor);
-
-				if (rays[x].wasHitVertical)
-				{
-					changeColorIntensity(&texelColor, 0.7);
-				}
-
-				drawPixel(x, y, texelColor);
-			}
-		}
-	}
-
-
-}
-
-void calculateBottomAndTop(float wallDistance, int wallHight, int& wallCeil, int& wallFloor)
-{
-	int nsliceHeight = (int)((1.0f / wallDistance) * Dist_PROJ_PLANE);
-	wallCeil = (WINDOW_HEIGHT / 2) - (nsliceHeight / 2.0f) - (wallHight - 1) * nsliceHeight;
-	wallFloor = (WINDOW_HEIGHT / 2) + (nsliceHeight / 2.0f);
-}
-
-void walltest(void)
-{
-	for (int i = 0; i < NUM_RAYS; i++) {
-
+        // do the delayed rendering here
+        for (int i = (int)vDelayedPixels.size() - 1; i >= 0; i--) {
+            DelayedPixel &dp = vDelayedPixels[i];
+            if (dp.p != 0x00000000) {
+                gfx.drawPixel( dp.x, dp.y, dp.p );
+            }
+        }
 	}
 }
+
 
