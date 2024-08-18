@@ -14,7 +14,11 @@ void Player::initplayer( Map *mapPtr )
 	strafeDirection = 0;
 	isstrafingleft = true;
 	isstrafingright = true;
-
+	fPlayerH = 0.5f;
+	fLookUp = 0.0;
+	upSpeed = 4.0f;
+	strafeup = 1.0f;
+	
 	pMap = mapPtr;
 }
 

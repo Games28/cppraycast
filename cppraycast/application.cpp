@@ -12,8 +12,10 @@
 
 	}
 
-	void Application::processInput()
+	void Application::processInput(float deltatime)
 	{
+		//flying attempt
+		float fCacheHorHeight = float(WINDOW_HEIGHT) * player.fPlayerH + player.fLookUp;
 		SDL_Event event;
 		SDL_PollEvent(&event);
 		switch (event.type) {
@@ -43,25 +45,46 @@
 			if (event.key.keysym.sym == SDLK_e) {
 				player.strafeDirection = -1; player.isstrafingright = true;
 			}
+
+
+			//flying attempt
+			//////////////////////////////////////////////////////////////////////////////
 			if (event.key.keysym.sym == SDLK_PAGEUP) {
-				sprite.islifting = true;
+				player.fPlayerH += player.upSpeed * player.strafeup * deltatime;
+				player.fLookUp = fCacheHorHeight - float(WINDOW_HEIGHT * player.fPlayerH);
 			}
 			if (event.key.keysym.sym == SDLK_PAGEDOWN) {
-				sprite.fSpriteUplift += 5.0f;
+				float fnewHeight = player.fPlayerH - player.upSpeed * player.strafeup * deltatime;
+				if (fnewHeight > 0.0f)
+				{
+					player.fPlayerH = fnewHeight;
+					player.fLookUp = fCacheHorHeight - float(WINDOW_HEIGHT * player.fPlayerH);
+				}
+			}
+			/////////////////////////////////////////////////////////////////////////////
+			if (event.key.keysym.sym == SDLK_UP)
+			{
+				player.fLookUp -= 5.0f;
 			}
 
-			//sprite movment
-			for (int i = 0; i < NUM_SPRITES; i++)
+			if (event.key.keysym.sym == SDLK_DOWN)
 			{
-				if (event.key.keysym.sym == SDLK_UP)
-					sprite.sprites[i].walkDirection = +1;
-				if (event.key.keysym.sym == SDLK_DOWN)
-					sprite.sprites[i].walkDirection = -1;
-				if (event.key.keysym.sym == SDLK_RIGHT)
-					sprite.sprites[i].turnDirection = +1;
-				if (event.key.keysym.sym == SDLK_LEFT)
-					sprite.sprites[i].turnDirection = -1;
+				player.fLookUp += 5.0f;
 			}
+
+
+			//sprite movment
+			//for (int i = 0; i < NUM_SPRITES; i++)
+			//{
+			//	if (event.key.keysym.sym == SDLK_UP)
+			//		sprite.sprites[i].walkDirection = +1;
+			//	if (event.key.keysym.sym == SDLK_DOWN)
+			//		sprite.sprites[i].walkDirection = -1;
+			//	if (event.key.keysym.sym == SDLK_RIGHT)
+			//		sprite.sprites[i].turnDirection = +1;
+			//	if (event.key.keysym.sym == SDLK_LEFT)
+			//		sprite.sprites[i].turnDirection = -1;
+			//}
 
 			if (event.key.keysym.sym == SDLK_SPACE)
 				sprite.istargeted = true;
@@ -91,18 +114,21 @@
 				}
 			}
 
+		
+
+			
 			//spritemovement
-			for (int i = 0; i < NUM_SPRITES; i++)
-			{
-				if (event.key.keysym.sym == SDLK_UP)
-					sprite.sprites[i].walkDirection = 0;
-				if (event.key.keysym.sym == SDLK_DOWN)
-					sprite.sprites[i].walkDirection = 0;
-				if (event.key.keysym.sym == SDLK_RIGHT)
-					sprite.sprites[i].turnDirection = 0;
-				if (event.key.keysym.sym == SDLK_LEFT)
-					sprite.sprites[i].turnDirection = 0;
-			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 			if (event.key.keysym.sym == SDLK_SPACE)
 				sprite.istargeted = false;
@@ -120,6 +146,9 @@
 		float deltaTime = (SDL_GetTicks() - ticksLastFrame) / 1000.0f;
 
 		ticksLastFrame = SDL_GetTicks();
+
+		processInput(deltaTime);
+		
 
 		//sprite.moveSprite(deltaTime);
 		sprite.update(deltaTime, phs);

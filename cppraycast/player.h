@@ -28,6 +28,13 @@ public:
 	float turnSpeed;
 	bool  isstrafingleft;
 	bool  isstrafingright;
+	float fLookUp;
+	float fPlayerH;
+
+
+    float strafeup;  // flying attempt
+    float upSpeed;   // flying attempt
+
 
 	Vec2 playermovebefore = Vec2(0, 0);
 	Vec2 playermoveafter = Vec2(0, 0);

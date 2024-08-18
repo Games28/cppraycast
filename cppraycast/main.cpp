@@ -12,7 +12,7 @@ int main(int argc, char* args[])
 
 	while (app.isGameRunning)
 	{
-		app.processInput();
+		//app.processInput();
 		app.update();
 		app.render();
 	}

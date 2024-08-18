@@ -37,7 +37,7 @@ public:
 	Application() = default;
      void setup();
 
-	void processInput();
+	void processInput(float deltatime);
 
 	void update();
 
