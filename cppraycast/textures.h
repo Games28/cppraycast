@@ -58,13 +58,9 @@ public:
 	};
 
 	const char* characterFileNames[NUM_CHARTEXTURES] = {
-		"./images/newicon.png",
-		"./images/newiconglow.png",
-		"./images/r2d2ground.png",
-		"./images/r2idletest.png",
-		"./images/crate1x64.png",
-		"./images/trooper.png",
-		"./images/trooperT.png",
+		
+		"troopertest.png",
+		"trooperT.png",
 	};
 };
 

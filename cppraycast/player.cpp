@@ -2,7 +2,7 @@
 
 void Player::initplayer( Map *mapPtr )
 {
-	x = WINDOW_WIDTH / 4;
+	x = WINDOW_WIDTH / 5;
 	y = WINDOW_HEIGHT / 2;
 	width = 2;
 	height = 2;

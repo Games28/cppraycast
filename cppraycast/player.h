@@ -31,6 +31,7 @@ public:
 	float fLookUp;
 	float fPlayerH;
 
+	float spriteoffsetX = 0.0f;
 
     float strafeup;  // flying attempt
     float upSpeed;   // flying attempt

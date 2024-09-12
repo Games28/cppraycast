@@ -49,7 +49,7 @@ void Rays::castRay(float rayAngle, int stripId, Player& player, Map& map)
         rec.rayAngle       = fA;
         rec.wallHitX       = fWhX;
         rec.wallHitY       = fWhY;
-        rec.distance       = fDst;
+        rec.frontdistance       = fDst;
         rec.wasHitVertical = bHitVer;
         rec.texture        = nTxtr;
     };
@@ -140,7 +140,7 @@ void Rays::castRay(float rayAngle, int stripId, Player& player, Map& map)
         rays[stripId].begin(),
         rays[stripId].end(),
         []( ray_t &a, ray_t &b ) {
-            return a.distance < b.distance;
+            return a.frontdistance < b.frontdistance;
         }
     );
 }

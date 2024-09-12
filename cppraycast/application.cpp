@@ -46,6 +46,12 @@
 				player.strafeDirection = -1; player.isstrafingright = true;
 			}
 
+			if (event.key.keysym.sym == SDLK_LEFT) {
+				player.spriteoffsetX += 0.2f;
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT) {
+				player.spriteoffsetX -= 0.2f;
+			}
 
 			//flying attempt
 			//////////////////////////////////////////////////////////////////////////////

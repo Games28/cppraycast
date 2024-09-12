@@ -19,7 +19,8 @@ class Wall
 public:
 	void changeColorIntensity(color_t* color, float factor);
 	void renderWallProjection(graphics& gfx, Rays& ray, Player& player, Texture& texture);
-	void calculateBottomAndTop(float wallDistance, int wallHight, int& wallCeil, int& wallFloor);
+	void calculateBottomAndTop(int sliceheight, int halfheight, float wallheight,
+		int& wallceil, int& wallfloor, Player& player);
 };
 
 #endif // !WALL_H

@@ -16,10 +16,18 @@ struct ray_t
 	float rayAngle;
 	float wallHitX;
 	float wallHitY;
-	float distance;
+	float frontdistance;
+	float backdistance;
+
 	bool wasHitVertical;
 	bool firstwall;
 	int texture;
+	float fFractionHeight = 1.0f;
+
+	float ceil_front;
+	float ceil_back;
+	float bottom_front;
+	float bottom_back;
 };
 
 typedef std::vector<ray_t> HitListType;

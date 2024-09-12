@@ -22,7 +22,7 @@
 #define TEXUTRE_HEIGHT 64
 
 #define NUM_SPRITES 1
-#define NUM_CHARTEXTURES 7
+#define NUM_CHARTEXTURES 2
 #define FOV_ANGLE (60 * (PI / 180))
 
 #define NUM_RAYS WINDOW_WIDTH
